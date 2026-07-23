@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+            padding: 0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: #f8f9fa;
+            color: #333;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .predefined-subjects {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .subject-btn {
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .subject-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .subject-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .custom-subject-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .custom-subject-input input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .custom-subject-input input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        }
+
+        .custom-subject-input button {
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .custom-subject-input button:hover {
+            background: #5568d3;
+        }
+
+        .selected-subjects {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .selected-subjects h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .selected-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .selected-item {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .selected-item button {
+            background: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .selected-item button:hover {
+            background: #ff5252;
+        }
+
+        .save-subjects-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .save-subjects-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .marks-input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .marks-input-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .marks-input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .marks-input-row input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .marks-input-row input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        }
+
+        .marks-input-row label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .results-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .subject-results {
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card .name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .result-card .marks {
+            color: #666;
+        }
+
+        .result-card .percentage {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+
+        .result-card .grade {
+            font-weight: bold;
+            font-size: 1.3em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .grade.A_plus {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .grade.A {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .grade.B {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .grade.C {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .grade.D {
+            background: #ffe5e5;
+            color: #721c24;
+        }
+
+        .grade.F {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .overall-result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .overall-result h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .overall-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .stat .label {
+            display: block;
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .stat .value {
+            display: block;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .improve-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .improve-btn:hover {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #ff5252;
+        }
+
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #f5c6cb;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .improvement-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .improvement-section.show {
+            display: block;
+        }
+
+        .improvement-section h3 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .improvement-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid white;
+        }
+
+        .improvement-subject {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .improvement-detail {
+            font-size: 0.95em;
+            margin: 5px 0;
+            opacity: 0.95;
+        }
+
+        .improvement-marks-needed {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .improvement-marks-needed.achievable {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .improvement-marks-needed.not-achievable {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .subject-target-group {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .subject-target-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .subject-target-group .subject-current {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .subject-target-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .subject-target-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-btn-submit {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-btn-submit:hover {
+            background: #5568d3;
+        }
+
+        .modal-btn-cancel {
+            background: #ddd;
+            color: #333;
+        }
+
+        .modal-btn-cancel:hover {
+            background: #ccc;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .success-msg.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .predefined-subjects {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .custom-subject-input {
+                grid-template-columns: 1fr;
+            }
+
+            .marks-input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .result-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Percentage Calculator</h1>
+            <p>Manage Subjects • Calculate Grades • Improve Performance</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('manage')">📚 Manage Subjects</button>
+            <button class="tab-btn" onclick="switchTab('calculate')">📈 Calculate Percentage</button>
+            <button class="tab-btn" onclick="switchTab('improve')">🎯 Improve Grade</button>
+        </div>
+
+        <!-- Tab 1: Manage Subjects -->
+        <div id="manage" class="tab-content active">
+            <h2 style="margin-bottom: 25px; color: #333;">📚 Manage Your Subjects</h2>
+
+            <div class="subject-selection">
+                <div class="section-title">⭐ Popular Subjects</div>
+                <div class="predefined-subjects" id="predefinedSubjects"></div>
+
+                <div class="section-title" style="margin-top: 30px;">➕ Add Custom Subject</div>
+                <div class="custom-subject-input">
+                    <input type="text" id="customSubjectName" placeholder="Enter subject name" maxlength="30">
+                    <button onclick="addCustomSubject()">Add Subject</button>
+                </div>
+            </div>
+
+            <div class="selected-subjects">
+                <h3>✅ Selected Subjects for Calculation</h3>
+                <p style="color: #666; font-size: 0.95em; margin-bottom: 15px;">Click on a subject to remove it</p>
+                <div class="selected-list" id="selectedSubjectsList"></div>
+            </div>
+
+            <button class="save-subjects-btn" onclick="saveSubjects()">💾 Save Subjects</button>
+            <div class="success-msg" id="successMsg">✅ Subjects saved successfully! Go to Calculate tab to enter marks.</div>
+        </div>
+
+        <!-- Tab 2: Calculate Percentage -->
+        <div id="calculate" class="tab-content">
+            <h2 style="margin-bottom: 25px; color: #333;">📈 Enter Your Marks</h2>
+
+            <div class="error-msg" id="errorMsg"></div>
+
+            <div class="marks-input-section" id="marksInputSection" style="display: none;">
+                <div class="marks-input-grid" id="marksInputGrid"></div>
+
+                <button class="calculate-btn" onclick="calculatePercentage()">Calculate Percentage</button>
+                <button class="improve-btn" onclick="openImproveModal()">📈 Improve Grade (Optional)</button>
+                <button class="reset-btn" onclick="resetCalculation()">Reset</button>
+            </div>
+
+            <div id="noSubjectsMsg" style="text-align: center; padding: 40px; color: #666;">
+                <p style="font-size: 1.2em; margin-bottom: 10px;">📚 No subjects selected yet!</p>
+                <p>Go to <strong>Manage Subjects</strong> tab to select or add subjects first.</p>
+            </div>
+
+            <div class="results-section" id="resultsSection">
+                <h2>📊 Results</h2>
+                
+                <div id="subjectResults" class="subject-results"></div>
+
+                <div class="overall-result">
+                    <h3>Overall Performance</h3>
+                    <div class="overall-stats">
+                        <div class="stat">
+                            <span class="label">Total Marks:</span>
+                            <span class="value" id="totalObtained">0</span> / <span id="totalPossible">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Overall Percentage:</span>
+                            <span class="value percentage" id="overallPercentage">0%</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Grade:</span>
+                            <span class="value grade" id="overallGrade">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="improvementSection" class="improvement-section">
+                    <h3>🎯 Here's What You Need To Improve</h3>
+                    <div id="improvementDetails"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Improve Grade -->
+        <div id="improve" class="tab-content">
+            <h2 style="margin-bottom: 25px; color: #333;">🎯 Improve Your Grade</h2>
+            
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <p style="font-size: 1.1em;">First, calculate your percentage in the <strong>Calculate Percentage</strong> tab.</p>
+                <p style="margin-top: 10px;">Then come back here to set improvement targets!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Improve Modal -->
+    <div id="improveModal" class="modal">
+        <div class="modal-content">
+            <h2>📈 Set Target Percentage for Each Subject</h2>
+            <p style="color: #666; font-size: 0.95em; margin-bottom: 20px; text-align: center;">
+                💡 Enter your target percentage for each subject!
+            </p>
+            <div id="targetInputsContainer"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-submit" onclick="calculateImprovement()">Calculate</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeImproveModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PREDEFINED_SUBJECTS = [
+            'Mathematics',
+            'English',
+            'Science',
+            'Social Studies',
+            'Hindi',
+            'Physics',
+            'Chemistry',
+            'Biology',
+            'History',
+            'Geography',
+            'Computer Science',
+            'Economics'
+        ];
+
+        let selectedSubjects = [];
+        let savedSubjects = [];
+        let currentResults = null;
+        let marksData = {};
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedSubjects();
+            displayPredefinedSubjects();
+            displaySelectedSubjects();
+        });
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'calculate') {
+                initializeCalculateTab();
+            }
+        }
+
+        function displayPredefinedSubjects() {
+            const container = document.getElementById('predefinedSubjects');
+            container.innerHTML = '';
+
+            PREDEFINED_SUBJECTS.forEach(subjectName => {
+                const btn = document.createElement('button');
+                btn.className = 'subject-btn';
+                btn.textContent = subjectName;
+
+                const isSelected = selectedSubjects.includes(subjectName);
+                if (isSelected) btn.classList.add('selected');
+
+                btn.onclick = () => {
+                    if (isSelected) {
+                        selectedSubjects = selectedSubjects.filter(s => s !== subjectName);
+                    } else {
+                        selectedSubjects.push(subjectName);
+                    }
+                    displayPredefinedSubjects();
+                    displaySelectedSubjects();
+                };
+
+                container.appendChild(btn);
+            });
+        }
+
+        function addCustomSubject() {
+            const name = document.getElementById('customSubjectName').value.trim();
+
+            if (!name) {
+                showError('Please enter subject name');
+                return;
+            }
+
+            const isDuplicate = selectedSubjects.some(s => s.toLowerCase() === name.toLowerCase());
+            if (isDuplicate) {
+                showError('Subject already added!');
+                return;
+            }
+
+            selectedSubjects.push(name);
+            document.getElementById('customSubjectName').value = '';
+            displaySelectedSubjects();
+        }
+
+        function displaySelectedSubjects() {
+            const container = document.getElementById('selectedSubjectsList');
+            container.innerHTML = '';
+
+            if (selectedSubjects.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No subjects selected yet</p>';
+                return;
+            }
+
+            selectedSubjects.forEach((subjectName, index) => {
+                const div = document.createElement('div');
+                div.className = 'selected-item';
+                div.innerHTML = `
+                    <span>${subjectName}</span>
+                    <button onclick="removeSubject(${index})">✕ Remove</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function removeSubject(index) {
+            selectedSubjects.splice(index, 1);
+            displayPredefinedSubjects();
+            displaySelectedSubjects();
+        }
+
+        function saveSubjects() {
+            if (selectedSubjects.length === 0) {
+                showError('Please select at least one subject');
+                return;
+            }
+
+            savedSubjects = [...selectedSubjects];
+            localStorage.setItem('savedSubjects', JSON.stringify(savedSubjects));
+
+            const successMsg = document.getElementById('successMsg');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        function loadSavedSubjects() {
+            const saved = localStorage.getItem('savedSubjects');
+            if (saved) {
+                savedSubjects = JSON.parse(saved);
+                selectedSubjects = [...savedSubjects];
+            } else {
+                // Set default favorite subjects
+                selectedSubjects = ['Accountancy', 'AI', 'Business Studies'];
+                savedSubjects = [...selectedSubjects];
+                localStorage.setItem('savedSubjects', JSON.stringify(savedSubjects));
+            }
+        }
+
+        function initializeCalculateTab() {
+            const section = document.getElementById('marksInputSection');
+            const noSubjectsMsg = document.getElementById('noSubjectsMsg');
+
+            if (savedSubjects.length === 0) {
+                section.style.display = 'none';
+                noSubjectsMsg.style.display = 'block';
+                return;
+            }
+
+            section.style.display = 'block';
+            noSubjectsMsg.style.display = 'none';
+
+            const grid = document.getElementById('marksInputGrid');
+            grid.innerHTML = '';
+
+            savedSubjects.forEach((subjectName, index) => {
+                const row = document.createElement('div');
+                row.className = 'marks-input-row';
+                row.innerHTML = `
+                    <label>${subjectName}</label>
+                    <input type="number" id="marks_${index}" placeholder="Marks obtained" step="0.01" min="0">
+                    <input type="number" id="total_${index}" placeholder="Total marks" step="1" min="1">
+                    <span></span>
+                `;
+                grid.appendChild(row);
+            });
+        }
+
+        function calculatePercentage() {
+            hideError();
+            document.getElementById('improvementSection').classList.remove('show');
+
+            marksData = {};
+            let results = [];
+            let totalObtained = 0;
+            let totalPossible = 0;
+
+            let valid = true;
+            savedSubjects.forEach((subjectName, index) => {
+                const marksInput = document.getElementById(`marks_${index}`);
+                const totalInput = document.getElementById(`total_${index}`);
+                
+                const marks = parseFloat(marksInput.value);
+                const totalMarks = parseFloat(totalInput.value);
+
+                if (isNaN(marks) || marks < 0) {
+                    showError(`Please enter valid marks for ${subjectName}`);
+                    valid = false;
+                    return;
+                }
+
+                if (isNaN(totalMarks) || totalMarks <= 0) {
+                    showError(`Please enter valid total marks for ${subjectName}`);
+                    valid = false;
+                    return;
+                }
+
+                if (marks > totalMarks) {
+                    showError(`Marks for ${subjectName} cannot exceed total marks (${totalMarks})`);
+                    valid = false;
+                    return;
+                }
+
+                marksData[subjectName] = { obtained: marks, total: totalMarks };
+                const percentage = (marks / totalMarks) * 100;
+                const grade = getGrade(percentage);
+
+                results.push({
+                    name: subjectName,
+                    marks_obtained: marks,
+                    total_marks: totalMarks,
+                    percentage: Math.round(percentage * 100) / 100,
+                    grade: grade
+                });
+
+                totalObtained += marks;
+                totalPossible += totalMarks;
+            });
+
+            if (!valid) return;
+
+            const overallPercentage = (totalObtained / totalPossible) * 100;
+            const overallGrade = getGrade(overallPercentage);
+
+            currentResults = {
+                subjects: results,
+                total_marks_obtained: totalObtained,
+                total_marks_possible: totalPossible,
+                overall_percentage: Math.round(overallPercentage * 100) / 100,
+                overall_grade: overallGrade
+            };
+
+            displayResults(currentResults);
+        }
+
+        function getGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B';
+            if (percentage >= 60) return 'C';
+            if (percentage >= 50) return 'D';
+            return 'F';
+        }
+
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('resultsSection');
+            const subjectResultsDiv = document.getElementById('subjectResults');
+            
+            subjectResultsDiv.innerHTML = '';
+
+            data.subjects.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                let gradeClass = subject.grade === 'A+' ? 'A_plus' : subject.grade;
+                
+                card.innerHTML = `
+                    <div class="name">${subject.name}</div>
+                    <div class="marks">${subject.marks_obtained}/${subject.total_marks}</div>
+                    <div class="percentage">${subject.percentage}%</div>
+                    <div class="grade ${gradeClass}">${subject.grade}</div>
+                `;
+                subjectResultsDiv.appendChild(card);
+            });
+
+            document.getElementById('totalObtained').textContent = data.total_marks_obtained;
+            document.getElementById('totalPossible').textContent = data.total_marks_possible;
+            document.getElementById('overallPercentage').textContent = data.overall_percentage + '%';
+            document.getElementById('overallGrade').textContent = data.overall_grade;
+
+            resultsDiv.classList.add('show');
+        }
+
+        function openImproveModal() {
+            if (!currentResults) {
+                showError('Please calculate your percentage first!');
+                return;
+            }
+
+            const container = document.getElementById('targetInputsContainer');
+            container.innerHTML = '';
+
+            currentResults.subjects.forEach((subject, index) => {
+                const div = document.createElement('div');
+                div.className = 'subject-target-group';
+                div.innerHTML = `
+                    <label for="target_${index}">${subject.name}</label>
+                    <div class="subject-current">
+                        📍 Current: ${subject.marks_obtained}/${subject.total_marks} (${subject.percentage}%)
+                    </div>
+                    <input type="number" id="target_${index}" placeholder="Enter target percentage" min="0" max="100" step="0.01" value="${subject.percentage}">
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('improveModal').style.display = 'block';
+        }
+
+        function closeImproveModal() {
+            document.getElementById('improveModal').style.display = 'none';
+        }
+
+        function calculateImprovement() {
+            const targetPercentages = [];
+            let valid = true;
+
+            currentResults.subjects.forEach((subject, index) => {
+                const input = document.getElementById(`target_${index}`);
+                const target = parseFloat(input.value);
+
+                if (isNaN(target) || target < 0 || target > 100) {
+                    alert(`Please enter a valid percentage for ${subject.name}`);
+                    valid = false;
+                    return;
+                }
+
+                targetPercentages.push({
+                    subject: subject,
+                    target: target
+                });
+            });
+
+            if (!valid) return;
+
+            let improvementData = [];
+
+            targetPercentages.forEach((item) => {
+                const subject = item.subject;
+                const targetPercentage = item.target;
+                const newMarksNeeded = (targetPercentage / 100) * subject.total_marks;
+                const additionalMarksNeeded = newMarksNeeded - subject.marks_obtained;
+
+                const newGrade = getGrade(targetPercentage);
+                const isAchievable = additionalMarksNeeded <= (subject.total_marks - subject.marks_obtained) && additionalMarksNeeded >= 0;
+
+                improvementData.push({
+                    name: subject.name,
+                    currentMarks: subject.marks_obtained,
+                    totalMarks: subject.total_marks,
+                    currentPercentage: subject.percentage,
+                    currentGrade: subject.grade,
+                    newMarks: Math.round(newMarksNeeded * 100) / 100,
+                    newPercentage: Math.round(targetPercentage * 100) / 100,
+                    marksNeeded: Math.round(additionalMarksNeeded * 100) / 100,
+                    newGrade: newGrade,
+                    isAchievable: isAchievable
+                });
+            });
+
+            displayImprovementPlan(improvementData);
+            closeImproveModal();
+        }
+
+        function displayImprovementPlan(improvementData) {
+            const improvementSection = document.getElementById('improvementSection');
+            const improvementDetails = document.getElementById('improvementDetails');
+            
+            improvementDetails.innerHTML = '';
+
+            improvementData.forEach(subject => {
+                const card = document.createElement('div');
+                card.className = 'improvement-card';
+
+                const achievableClass = subject.isAchievable ? 'achievable' : 'not-achievable';
+                const achievableText = subject.isAchievable ? '✅ Achievable' : '❌ Not Achievable (Exceeds max marks)';
+
+                card.innerHTML = `
+                    <div class="improvement-subject">${subject.name}</div>
+                    <div class="improvement-detail">
+                        📍 Current: ${subject.currentMarks}/${subject.totalMarks} (${subject.currentPercentage}%) - Grade: ${subject.currentGrade}
+                    </div>
+                    <div class="improvement-detail">
+                        🎯 Target: ${subject.newMarks}/${subject.totalMarks} (${subject.newPercentage}%) - Grade: ${subject.newGrade}
+                    </div>
+                    <div class="improvement-marks-needed ${achievableClass}">
+                        📚 Additional Marks Needed: <strong>${subject.marksNeeded}</strong> marks
+                        <br>${achievableText}
+                    </div>
+                `;
+                improvementDetails.appendChild(card);
+            });
+
+            improvementSection.classList.add('show');
+        }
+
+        function resetCalculation() {
+            marksData = {};
+            currentResults = null;
+            document.getElementById('resultsSection').classList.remove('show');
+            document.getElementById('improvementSection').classList.remove('show');
+            initializeCalculateTab();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMsg');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function hideError() {
+            const errorDiv = document.getElementById('errorMsg');
+            errorDiv.classList.remove('show');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('improveModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
